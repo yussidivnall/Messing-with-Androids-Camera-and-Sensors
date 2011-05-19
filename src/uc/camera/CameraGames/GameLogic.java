@@ -9,7 +9,7 @@ public class GameLogic {
 	
 	SensorsOutput mySensors;
 	Vector3D myVector;
-	
+	public int CanvasWidth=1,CanvasHeight=1;
 	
 	GameLogic(SensorsOutput so){
 		mySensors=so;
@@ -17,7 +17,14 @@ public class GameLogic {
 	}
 	public void pannel(Canvas c){
 		Paint paint = new Paint();
-		paint.setColor(Color.YELLOW);
+		paint.setColor(Color.RED);
+		
+		double rotation_X_axis=mySensors.rotation_x;
+		
+		
+		c.drawText(""+rotation_X_axis, 50, 50, paint);
+		
+		/*
 		double distance=Utils.getMagnitude(myVector);
 		double rotation_y=Utils.getYAxisAngle(myVector);
 		c.drawText("distance: "+distance, 0, 20, paint);
@@ -34,13 +41,45 @@ public class GameLogic {
 		double XAxisAngleDifference=mySensors.rotation_x-pointXAvisAngle;
 		c.drawText("point X axis angle:"+pointXAvisAngle,0,90,paint);
 		c.drawText("Difference on the x axis rotation:"+XAxisAngleDifference,0,110,paint);
+		*/
+		
+	}
+	
+	
+	public Vector3D getScreenPosition(Vector3D v){
+		//Returns screen coordinates of point with Z being distance
+		double distance=Utils.getMagnitude(myVector);
+		double rotation_y=Utils.getYAxisAngle(myVector);
+		double difference_y=mySensors.rotation_y-rotation_y; //difference in angle on the y axis between the camera and the point's position
+		
+		double rotation_x=Utils.getXAxisAngle(myVector);
+		double difference_x=mySensors.rotation_x-rotation_x;
+		float center_x=CanvasWidth/2;
+		float center_y=CanvasHeight/2;
+		
+		if(difference_y > -VIEWRANGE && difference_y < VIEWRANGE){
+			float unit_x=CanvasWidth/(2*VIEWRANGE);
+			float unit_y=CanvasHeight/(2*VIEWRANGE);
+			
+			float x=(float)(center_x-(unit_x*difference_y));
+			float y=(float)(center_y-(unit_y*difference_x)); // TODO
+			Vector3D ret = new Vector3D(x,y,distance);
+			return ret;
+		}else{
+			return null;
+		}
+		
 	}
 	
 	
 	public void placement(Canvas c){
 		Paint paint = new Paint();
 		paint.setColor(Color.RED);
-		
+		Vector3D p = getScreenPosition(myVector);
+		if(p!=null){
+			c.drawCircle((float)p.X, (float)p.Y, (float)p.Z*3, paint);
+		}
+		/*
 		double distance=Utils.getMagnitude(myVector);
 		double rotation_y=Utils.getYAxisAngle(myVector);
 		double difference_y=mySensors.rotation_y-rotation_y; //difference in angle on the y axis between the camera and the point's position
@@ -51,55 +90,19 @@ public class GameLogic {
 		if(difference_y > -VIEWRANGE && difference_y < VIEWRANGE){
 			float unit=c.getWidth()/(2*VIEWRANGE);
 			//double position = c.getWidth()/2*difference;
-			c.drawCircle((float)(c.getWidth()/2-(unit*difference_y)), c.getHeight()/2, 10, paint);
-		}
-	}
-	
-	
-	public void drawPoint(Canvas c){
-		/*Position pos = new Position(10,10,10);
-		//Tan(angle) = Opp/Adj
-		double point_angle = Math.atan(pos.Z/pos.X)*180/Math.PI;
-		double difference_in_angles = mySensors.rotation_x-point_angle;
-		
-		Paint paint = new Paint();
-		paint.setColor(Color.GRAY);
-		c.drawText("difference:"+difference_in_angles , 100, 200, paint);
-		//c.drawCircle((float)(c.getWidth()/2+difference_in_angles), 90, 10, paint);
-		
-		if(difference_in_angles < 45 && difference_in_angles > -45){
-		
-			if(difference_in_angles > 0){
-				c.drawCircle((float)(c.getWidth()/2-difference_in_angles*c.getWidth()/90), c.getHeight()/2, 10, paint);
-			}else {
-				c.drawCircle((float)(c.getWidth()/2+difference_in_angles*c.getWidth()/90), c.getHeight()/2, 10, paint);
-			}
+			float x=(float)(c.getWidth()/2-(unit*difference_y));
+			//c.drawCircle((float)(c.getWidth()/2-(unit*difference_y)), c.getHeight()/2, 10, paint);
+			c.drawCircle(x, c.getHeight()/2, 10, paint);
 		}
 		*/
-		
-		/*
-		long rat=pos.Z/pos.X;
-		double a =Math.atan(rat)*180/Math.PI;
-		double diff_x
-		Paint p = new Paint();
-		p.setColor(Color.MAGENTA);
-		c.drawText("angle: "+a, 50, 60, p);
-		int width = c.getWidth(); int height = c.getHeight();
-		//c.drawCircle(width/2, height/2, 10, p);
-		if(mySensors.rotation_x+45 >a && mySensors.rotation_x-45 < a){
-			if(mySensors.rotation_x >a){ 
-				c.drawCircle(width/2+mySensors.rotation_x*7, height/2, 10, p);
-			}
-			if(mySensors.rotation_x <a){ 
-				c.drawCircle(width/2-mySensors.rotation_x*7, height/2, 10, p);
-			}			
-		}
-		*/
-		
-		
 	}
 	
+	public void updateCanvasSize(Canvas c){
+		if(c.getWidth()!=CanvasWidth) CanvasWidth=c.getWidth();
+		if(c.getHeight()!=CanvasHeight) CanvasHeight=c.getHeight();
+	}
 	public void draw(Canvas canvas){
+		updateCanvasSize(canvas);
 		placement(canvas);
 		pannel(canvas);
 		/*drawPoint(canvas);

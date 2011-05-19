@@ -56,8 +56,8 @@ public class OverlayView extends View {
 		Paint paint = new Paint();
 		paint.setColor(Color.RED);
 		
-		c.drawText("View dimension:"+this.getWidth()+"x"+this.getHeight(), 0, 50, paint);
-		c.drawText("View mesured dimension:"+this.getMeasuredWidth()+"x"+this.getMeasuredHeight(), 00, 60, paint);
+		//c.drawText("View dimension:"+this.getWidth()+"x"+this.getHeight(), 0, 50, paint);
+		//c.drawText("View mesured dimension:"+this.getMeasuredWidth()+"x"+this.getMeasuredHeight(), 00, 60, paint);
 		//c.setViewport(this.getWidth(), this.getWidth());
 		//c.drawText("Canvas dimension in view:"+c.getWidth()+"x"+c.getHeight(), 0, 60, paint);
 		/*super.onDraw(c);
