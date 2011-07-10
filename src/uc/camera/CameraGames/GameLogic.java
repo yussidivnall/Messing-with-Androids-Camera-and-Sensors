@@ -16,13 +16,18 @@ public class GameLogic {
 		myVector = new Vector3D(10,10,10);
 	}
 	public void pannel(Canvas c){
-		Paint paint = new Paint();
-		paint.setColor(Color.RED);
+		Paint redpaint = new Paint();redpaint.setColor(Color.RED);
+		Paint greenpaint = new Paint();greenpaint.setColor(Color.GREEN);
+		Paint bluepaint = new Paint();bluepaint.setColor(Color.BLUE);
 		
 		double rotation_X_axis=mySensors.rotation_x;
+		double rotation_Y_axis=mySensors.rotation_y;
+		double rotation_Z_axis=mySensors.rotation_z;
 		
 		
-		c.drawText(""+rotation_X_axis, 50, 50, paint);
+		c.drawText("rotation on X:"+rotation_X_axis, 50, 50, redpaint);
+		c.drawText("rotation on Y:"+rotation_Y_axis, 50, 60, greenpaint);
+		c.drawText("rotation on Z:"+rotation_Z_axis, 50, 70, bluepaint);
 		
 		/*
 		double distance=Utils.getMagnitude(myVector);
