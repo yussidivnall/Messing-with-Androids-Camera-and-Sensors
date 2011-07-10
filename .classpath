@@ -3,13 +3,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry exported="true" kind="lib" path="/opt/android-sdk-linux_86/platforms/android-2.2_r02-linux/android.jar" sourcepath="/opt/android-sdk-linux_86/platforms/android-2.2_r02-linux/sources">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/opt/android-sdk-linux_86/docs/reference"/>
-		</attributes>
-		<accessrules>
-			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
-		</accessrules>
-	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,18 +1,17 @@
 package uc.camera.CameraGames;
 
-import java.util.Timer;
-import java.util.TimerTask;
+//import java.util.TimerTask;
 
 import android.app.Activity;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+//import android.graphics.Canvas;
+//import android.graphics.Paint;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.view.View;
+//import android.view.View;
 import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 public class CameraGames extends Activity {
 	Camera mCamera;

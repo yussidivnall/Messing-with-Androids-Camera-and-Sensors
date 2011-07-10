@@ -1,19 +1,19 @@
 package uc.camera.CameraGames;
 
 import java.io.IOException;
-import java.util.List;
+//import java.util.List;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
+//import android.graphics.Canvas;
+//import android.graphics.Paint;
+//import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
-import android.hardware.Camera.Size;
+//import android.hardware.Camera.Size;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.SurfaceHolder.Callback;
+//import android.view.SurfaceHolder.Callback;
 import android.widget.Toast;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
