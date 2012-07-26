@@ -9,11 +9,22 @@ public class GameLogic {
 	
 	SensorsOutput mySensors;
 	Vector3D myVector;
+	Vector3D redDotVector;
+	Vector3D greenDotVector;
+	Vector3D blueDotVector;
+	
 	public int CanvasWidth=1,CanvasHeight=1;
 	
 	GameLogic(SensorsOutput so){
 		mySensors=so;
+		
+		redDotVector=new Vector3D(-10,10,10);
+		greenDotVector=new Vector3D(0,0,0);
+		blueDotVector=new Vector3D(-10,10,10);
+		redDotVector=new Vector3D(-10,10,10);
 		myVector = new Vector3D(10,10,10);
+		
+		
 	}
 	public void pannel(Canvas c){
 		Paint redpaint = new Paint();redpaint.setColor(Color.RED);
@@ -78,11 +89,22 @@ public class GameLogic {
 	
 	
 	public void placement(Canvas c){
-		Paint paint = new Paint();
-		paint.setColor(Color.RED);
+		Paint red = new Paint();red .setColor(Color.RED);
+		Paint green = new Paint();green.setColor(Color.GREEN);
+		
+		
+		Vector3D gdv=getScreenPosition(greenDotVector);
+		Vector3D rdv=getScreenPosition(blueDotVector);
+		if(gdv!=null){
+			c.drawCircle((float)gdv.X, (float)gdv.Y, (float)gdv.Z*3, green);
+		}
+		if(rdv!=null){
+			c.drawCircle((float)rdv.X, (float)rdv.Y, (float)rdv.Z*3, red);
+		}
+		
 		Vector3D p = getScreenPosition(myVector);
 		if(p!=null){
-			c.drawCircle((float)p.X, (float)p.Y, (float)p.Z*3, paint);
+			c.drawCircle((float)p.X, (float)p.Y, (float)p.Z*3, green);
 		}
 		/*
 		double distance=Utils.getMagnitude(myVector);
