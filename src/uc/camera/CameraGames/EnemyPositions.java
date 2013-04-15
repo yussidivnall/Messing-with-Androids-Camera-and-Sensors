@@ -41,7 +41,7 @@ public class EnemyPositions {
 			
 			float playerRotationYAxis = (float) (mSensors.rotation_y*Math.PI/180); //Player rotation (left/right) (-pi,pi)
 			float angles_difference = playerRotationYAxis-enemyYAngle;
-			Log.d("EnemyPositions draw()", "angles_difference"+angles_difference);
+			//Log.d("EnemyPositions draw()", "angles_difference"+angles_difference);
 			
 			//Get angle from center to enemy
 			//subtract yrot
