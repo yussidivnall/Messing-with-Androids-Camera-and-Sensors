@@ -7,7 +7,11 @@ import android.graphics.Paint;
 public class GameLogic {
 	public final float VIEWRANGE=45/3f;
 	
-	SensorsOutput mySensors;
+	SensorsOutput 	mySensors;
+	EnemyPositions 	myEnemyPositions;
+	HUD 			mHUD;
+	
+	
 	Vector3D myVector;
 	Vector3D redDotVector;
 	Vector3D greenDotVector;
@@ -17,6 +21,9 @@ public class GameLogic {
 	
 	GameLogic(SensorsOutput so){
 		mySensors=so;
+		myEnemyPositions = new EnemyPositions();
+		mHUD = new HUD(mySensors,myEnemyPositions);
+		
 		
 		redDotVector=new Vector3D(-10,10,10);
 		greenDotVector=new Vector3D(0,0,0);
@@ -131,7 +138,11 @@ public class GameLogic {
 	public void draw(Canvas canvas){
 		updateCanvasSize(canvas);
 		placement(canvas);
-		pannel(canvas);
+		
+		
+		//pannel(canvas);
+		mHUD.draw(canvas);
+		
 		/*drawPoint(canvas);
 		if(mySensors.rotation_x> 180 && mySensors.rotation_x <270){
 			Paint p = new Paint();
