@@ -23,13 +23,31 @@ public class HUD {
 	}
 	
 	
+	
+	//Basic top down radar, (Just angle around y-axis)
+	public void radarDraw(Canvas c){
+		int cx=30; int cy=30; int radius=30;//circle centre, radius
+		double angle=Math.PI*mSensors.rotation_y/180; //(-180,180), NORTH at 0
+		int xi=(int) (cx+radius*Math.cos(angle)); //end of central radar ray
+		int yi=(int) (cy+radius*Math.sin(angle)); //end of central radar ray
+		
+		Paint bluepaint = new Paint();bluepaint.setColor(Color.BLUE);
+		Paint greenpaint = new Paint();greenpaint.setColor(Color.GREEN);
+		c.drawCircle(cx, cy, radius, bluepaint);
+		c.drawLine(cx, cy, xi, yi, greenpaint);
+		
+	}
+	
+	
+	
+	
 	public HUD(SensorsOutput so,EnemyPositions enemies){
 		mSensors =so;
 		mEnemies = enemies;
 	}
 	public void draw(Canvas c){
 		debugDraw(c);
-		
+		radarDraw(c);
 	}
 	
 }

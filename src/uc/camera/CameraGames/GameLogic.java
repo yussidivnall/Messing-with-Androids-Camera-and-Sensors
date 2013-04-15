@@ -7,8 +7,8 @@ import android.graphics.Paint;
 public class GameLogic {
 	public final float VIEWRANGE=45/3f;
 	
-	SensorsOutput 	mySensors;
-	EnemyPositions 	myEnemyPositions;
+	SensorsOutput 	mSensors;
+	EnemyPositions 	mEnemies;
 	HUD 			mHUD;
 	
 	
@@ -20,9 +20,9 @@ public class GameLogic {
 	public int CanvasWidth=1,CanvasHeight=1;
 	
 	GameLogic(SensorsOutput so){
-		mySensors=so;
-		myEnemyPositions = new EnemyPositions();
-		mHUD = new HUD(mySensors,myEnemyPositions);
+		mSensors=so;
+		mEnemies= new EnemyPositions(so);
+		mHUD = new HUD(mSensors,mEnemies);
 		
 		
 		redDotVector=new Vector3D(-10,10,10);
@@ -33,50 +33,16 @@ public class GameLogic {
 		
 		
 	}
-	public void pannel(Canvas c){
-		Paint redpaint = new Paint();redpaint.setColor(Color.RED);
-		Paint greenpaint = new Paint();greenpaint.setColor(Color.GREEN);
-		Paint bluepaint = new Paint();bluepaint.setColor(Color.BLUE);
-		
-		double rotation_X_axis=mySensors.rotation_x;
-		double rotation_Y_axis=mySensors.rotation_y;
-		double rotation_Z_axis=mySensors.rotation_z;
-		
-		
-		c.drawText("rotation on X:"+rotation_X_axis, 50, 50, redpaint);
-		c.drawText("rotation on Y:"+rotation_Y_axis, 50, 60, greenpaint);
-		c.drawText("rotation on Z:"+rotation_Z_axis, 50, 70, bluepaint);
-		
-		/*
-		double distance=Utils.getMagnitude(myVector);
-		double rotation_y=Utils.getYAxisAngle(myVector);
-		c.drawText("distance: "+distance, 0, 20, paint);
-		c.drawText("y rotation: "+rotation_y, 0, 30, paint);
-		
-		double difference=mySensors.rotation_y-rotation_y;
-		paint.setColor(Color.GREEN);
-		c.drawText("difference: "+difference, 0, 40, paint);
-		c.drawText("Phone x rotation"+mySensors.rotation_x, 0, 50, paint);
-		
-		
-		
-		double pointXAvisAngle=Utils.getXAxisAngle(myVector);
-		double XAxisAngleDifference=mySensors.rotation_x-pointXAvisAngle;
-		c.drawText("point X axis angle:"+pointXAvisAngle,0,90,paint);
-		c.drawText("Difference on the x axis rotation:"+XAxisAngleDifference,0,110,paint);
-		*/
-		
-	}
 	
 	
 	public Vector3D getScreenPosition(Vector3D v){
 		//Returns screen coordinates of point with Z being distance
 		double distance=Utils.getMagnitude(myVector);
 		double rotation_y=Utils.getYAxisAngle(myVector);
-		double difference_y=mySensors.rotation_y-rotation_y; //difference in angle on the y axis between the camera and the point's position
+		double difference_y=mSensors.rotation_y-rotation_y; //difference in angle on the y axis between the camera and the point's position
 		
 		double rotation_x=Utils.getXAxisAngle(myVector);
-		double difference_x=mySensors.rotation_x-rotation_x;
+		double difference_x=mSensors.rotation_x-rotation_x;
 		float center_x=CanvasWidth/2;
 		float center_y=CanvasHeight/2;
 		
@@ -137,8 +103,10 @@ public class GameLogic {
 	}
 	public void draw(Canvas canvas){
 		updateCanvasSize(canvas);
-		placement(canvas);
 		
+		
+		placement(canvas); //TODO get rid of this...
+		mEnemies.draw(canvas);
 		
 		//pannel(canvas);
 		mHUD.draw(canvas);
