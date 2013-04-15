@@ -1,8 +1,12 @@
 package uc.camera.CameraGames;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.*;
+import android.content.res.Resources;
 
 public class GameLogic {
 	public final float VIEWRANGE=45/3f;
@@ -11,6 +15,7 @@ public class GameLogic {
 	EnemyPositions 	mEnemies;
 	HUD 			mHUD;
 	
+	BitmapFactory mBitmapFactory;
 	
 	Vector3D myVector;
 	Vector3D redDotVector;
@@ -19,9 +24,12 @@ public class GameLogic {
 	
 	public int CanvasWidth=1,CanvasHeight=1;
 	
-	GameLogic(SensorsOutput so){
+	GameLogic(SensorsOutput so,EnemyPositions initialEnemies){
+		mBitmapFactory = new BitmapFactory();
+		
 		mSensors=so;
-		mEnemies= new EnemyPositions(so);
+		//mEnemies= new EnemyPositions(so);
+		mEnemies=initialEnemies;
 		mHUD = new HUD(mSensors,mEnemies);
 		
 		
@@ -31,6 +39,9 @@ public class GameLogic {
 		redDotVector=new Vector3D(-10,10,10);
 		myVector = new Vector3D(10,10,10);
 		
+		//TODO move all this to some level loader
+		//BitmapFactory.decodeResource(getResources(),R.drawable.skull);
+		//Enemy enemyA=new Enemy(-10,0,10,999, bmp);
 		
 	}
 	

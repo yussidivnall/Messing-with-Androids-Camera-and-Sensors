@@ -4,12 +4,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 
@@ -29,14 +32,46 @@ public class OverlayView extends View {
 	Timer timer;
 	SensorsOutput mySensors;
 
+	
+	//I'd rather keep this closer to game logic, but needs to be able to load images from resources
+	//Into mEnemies. Maybe pass a context to GameLogic instead?
+	EnemyPositions mEnemies; 
+	Bitmap bmp;
+	public void LoadLevel(){ //For the time being do some static initializing
+		Log.d("LoadLevel", "Starting LoadLevel, in OverlayView");
+		mEnemies = new EnemyPositions(mySensors);
+		Log.d("LoadLevel", "Loading bitmaps");
+		
+		bmp = BitmapFactory.decodeResource(getResources(),R.drawable.icon);
+		Log.d("LoadLevel", "Loaded bmp is null?"+bmp.equals(null));
+		
+		Log.d("LoadLevel", "Creating enemies");
+		Enemy enemyA= new Enemy(-10,0,0,999,bmp);
+		Enemy enemyB= new Enemy(0,0,-10,999,bmp);
+		Log.d("LoadLevel", "Got enemy? " + enemyA.equals(null));
+		mEnemies.add(enemyA);mEnemies.add(enemyB);
+		Log.d("LoadLevel", "End of LoadLevel, in OverlayView");
+	}
+	
+	
 	public OverlayView(Context c,SensorsOutput so){
 		super(c);
 		mySensors=so;
-		myGameLogic=new GameLogic(mySensors);
+		
+		//TODO move this to some level loader
+		LoadLevel();
+		
+		
+		
+		
+		myGameLogic=new GameLogic(mySensors,mEnemies);
 		timer = new Timer();
 		timer.schedule(new  UpdateTimerTask(), 0, step);
 		
 		this.invalidate();	
+		
+
+		
 	}
 	
 	public void update(){
@@ -44,9 +79,9 @@ public class OverlayView extends View {
 		//this.invalidate();
 	}
 	
-	public void setSensorsOutput(SensorsOutput so){
+	public void setSensorsOutput(SensorsOutput so){ //WHY DO I NEED TO DO THIS TWICE? (CONST NOT ENOUGH!)
 		mySensors=so;
-		myGameLogic=new GameLogic(mySensors);
+		myGameLogic=new GameLogic(mySensors,mEnemies);
 	}
 	
 	

@@ -7,11 +7,14 @@ import android.graphics.Paint;
 public class HUD {
 	SensorsOutput mSensors;
 	EnemyPositions mEnemies;
+	
+	
+	Paint redpaint = new Paint();
+	Paint greenpaint = new Paint();
+	Paint bluepaint = new Paint();	
+	
 	public void debugDraw(Canvas c){
-		Paint redpaint = new Paint();redpaint.setColor(Color.RED);
-		Paint greenpaint = new Paint();greenpaint.setColor(Color.GREEN);
-		Paint bluepaint = new Paint();bluepaint.setColor(Color.BLUE);
-		
+
 		double rotation_X_axis=mSensors.rotation_x;
 		double rotation_Y_axis=mSensors.rotation_y;
 		double rotation_Z_axis=mSensors.rotation_z;
@@ -22,6 +25,15 @@ public class HUD {
 		c.drawText("rotation on Z:"+rotation_Z_axis, 50, 70, bluepaint);
 	}
 	
+	public void enemiesDraw(Canvas c,int cx, int cy,int radius){
+		for (Enemy e : mEnemies.getList()){
+			Vector3D pos=e.getPosition();
+			
+			
+			c.drawPoint((float)(cx+pos.X),(float)(cy+pos.Y),redpaint);
+		}
+		
+	}
 	
 	
 	//Basic top down radar, (Just angle around y-axis)
@@ -31,11 +43,9 @@ public class HUD {
 		int xi=(int) (cx+radius*Math.cos(angle)); //end of central radar ray
 		int yi=(int) (cy+radius*Math.sin(angle)); //end of central radar ray
 		
-		Paint bluepaint = new Paint();bluepaint.setColor(Color.BLUE);
-		Paint greenpaint = new Paint();greenpaint.setColor(Color.GREEN);
 		c.drawCircle(cx, cy, radius, bluepaint);
 		c.drawLine(cx, cy, xi, yi, greenpaint);
-		
+		enemiesDraw(c,cx,cy,radius);
 	}
 	
 	
@@ -44,6 +54,9 @@ public class HUD {
 	public HUD(SensorsOutput so,EnemyPositions enemies){
 		mSensors =so;
 		mEnemies = enemies;
+		
+		redpaint.setColor(Color.RED);greenpaint.setColor(Color.GREEN);bluepaint.setColor(Color.BLUE);
+
 	}
 	public void draw(Canvas c){
 		debugDraw(c);

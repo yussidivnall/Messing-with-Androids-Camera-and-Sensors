@@ -43,5 +43,7 @@ public class SensorsOutput implements SensorEventListener{
 			acceleration_z=event.values[2];
 		}
 	}
+	
+	
 
 }
