@@ -30,6 +30,9 @@ public class EnemyPositions {
 		mEnemies.add(enemy);
 	}
 	
+	
+	//draw, iterate through enemies, calculate if in visible range(-fieldOfView,fieldOfView) and draw
+	//TODO: Not implemented yet
 	public void draw(Canvas c){
 		double fieldOfView = Math.PI/4;
 		
@@ -37,6 +40,9 @@ public class EnemyPositions {
 			//Asume pi/2 viewrange (90 degrees), pi/4(45 deg) to left of center  and pi/4 to right
 			//might need to tune this;
 			Vector3D ePos=e.getPosition(); //Enemy position
+			ePos.PositionToAngle();
+			
+			
 			float enemyYAngle=(float) (Math.atan(ePos.X/ePos.Z)*Math.PI/180);
 			
 			float playerRotationYAxis = (float) (mSensors.rotation_y*Math.PI/180); //Player rotation (left/right) (-pi,pi)
@@ -46,9 +52,8 @@ public class EnemyPositions {
 			//Get angle from center to enemy
 			//subtract yrot
 			//check if in -pi/4,pi/4
-			
-			
 			e.draw(c);
+			//TODO - Finish this
 			
 		}
 			

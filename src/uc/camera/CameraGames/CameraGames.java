@@ -3,12 +3,17 @@ package uc.camera.CameraGames;
 //import java.util.TimerTask;
 
 import android.app.Activity;
+
 //import android.graphics.Canvas;
 //import android.graphics.Paint;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+
+
+
 //import android.view.View;
+
 import android.util.Log;
 import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
@@ -30,8 +35,8 @@ public class CameraGames extends Activity {
         SensorsOutput sensors = new SensorsOutput((SensorManager)getSystemService(SENSOR_SERVICE)); //Sensors 
         overlay= new OverlayView(this,sensors);//Grab OverlayView
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.setContentView(preview);  
-        this.addContentView(overlay, new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        this.setContentView(preview);  //Set camera preview as base content
+        this.addContentView(overlay, new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)); //add another content
     	}catch (Exception e){
     		Log.d("OnCreate exception", e.toString());
     	}finally{Log.d("Oncreate", "Finally");};
@@ -45,11 +50,13 @@ public class CameraGames extends Activity {
     @Override 
     protected void onPause(){
     	super.onPause();
-    	Log.d("onResume", "Called");
+    	overlay.pause();
+    	Log.d("onPause", "Called");
     }
     @Override
     protected void onResume(){
     	super.onResume();
+    	overlay.resume();
     	Log.d("onResume", "Called");
     }
     @Override

@@ -42,14 +42,14 @@ public class OverlayView extends View {
 		mEnemies = new EnemyPositions(mySensors);
 		Log.d("LoadLevel", "Loading bitmaps");
 		
-		bmp = BitmapFactory.decodeResource(getResources(),R.drawable.icon);
+		bmp = BitmapFactory.decodeResource(getResources(),R.drawable.skull);
 		Log.d("LoadLevel", "Loaded bmp is null?"+bmp.equals(null));
 		
 		Log.d("LoadLevel", "Creating enemies");
-		Enemy enemyA= new Enemy(-10,0,0,999,bmp);
+		Enemy enemyA= new Enemy(10,0,10,999,bmp);
 		Enemy enemyB= new Enemy(0,0,-10,999,bmp);
 		Log.d("LoadLevel", "Got enemy? " + enemyA.equals(null));
-		mEnemies.add(enemyA);mEnemies.add(enemyB);
+		mEnemies.add(enemyA);//mEnemies.add(enemyB);
 		Log.d("LoadLevel", "End of LoadLevel, in OverlayView");
 	}
 	
@@ -73,6 +73,15 @@ public class OverlayView extends View {
 
 		
 	}
+	public void pause(){
+		timer.cancel();
+	}
+	public void resume(){
+		timer = new Timer();
+		timer.schedule(new  UpdateTimerTask(), 0, step);		
+	}
+	
+	
 	
 	public void update(){
 		myGameLogic.advance(step);

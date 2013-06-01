@@ -26,9 +26,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		
 		mHolder.addCallback(this);
 		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-		//Toast.makeText(context, "Hey", 1000);
-		//mHolder.setType(SurfaceHolder.SURFACE_TYPE_HARDWARE);
-		// TODO Auto-generated constructor stub
 	}
 
 	

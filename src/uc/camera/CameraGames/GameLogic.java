@@ -116,10 +116,8 @@ public class GameLogic {
 		updateCanvasSize(canvas);
 		
 		
-		placement(canvas); //TODO get rid of this...
+		//placement(canvas); //TODO get rid of this...
 		mEnemies.draw(canvas);
-		
-		//pannel(canvas);
 		mHUD.draw(canvas);
 		
 		/*drawPoint(canvas);

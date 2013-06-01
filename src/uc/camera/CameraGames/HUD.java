@@ -28,9 +28,9 @@ public class HUD {
 	public void enemiesDraw(Canvas c,int cx, int cy,int radius){
 		for (Enemy e : mEnemies.getList()){
 			Vector3D pos=e.getPosition();
+			c.drawCircle((float)(cx+pos.X), (float)(cy+pos.Z), 2, redpaint);
 			
-			
-			c.drawPoint((float)(cx+pos.X),(float)(cy+pos.Y),redpaint);
+			c.drawPoint((float)(cx+pos.X),(float)(cy+pos.Z),redpaint);
 		}
 		
 	}
