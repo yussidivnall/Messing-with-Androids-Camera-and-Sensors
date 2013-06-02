@@ -17,7 +17,7 @@ public class HUD {
 	Paint blackpaint = new Paint();
 	
 	
-	Rect radarFrame=new Rect(0,0,200,200);
+	Rect radarFrame=new Rect(0,0,100,100);
 	
 	
 	public void debugDraw(Canvas c){
@@ -35,8 +35,12 @@ public class HUD {
 	public void enemiesDraw(Canvas c,int cx, int cy,int radius){
 		for (Enemy e : mEnemies.getList()){
 			Vector3D pos=e.getPosition();
+			int radarCenterX=radarFrame.centerX();
+			int radarCenterY=radarFrame.centerY();
 			
-			Log.d("HUD","drawing enemy x:"+(pos.X*10)+" y:"+(pos.Z*10));
+			
+			
+			//Log.d("HUD","drawing enemy x:"+(pos.X*10)+" y:"+(pos.Z*10));
 			
 			
 			//c.drawCircle((float)(cx+pos.X), (float)(cy+pos.Z), 2, redpaint);
@@ -59,18 +63,14 @@ public class HUD {
 	}
 	
 	public void axisDraw(Canvas c){
-		int framex=10;
-		int framey=10;
-		int framewidth=200;
-		int frameheight=200;
-		Rect r= new Rect(framex,framey,framewidth,frameheight);
+		c.drawRect(radarFrame, blackpaint);
+		
+		c.drawLine(radarFrame.left, radarFrame.top, radarFrame.bottom, radarFrame.width(), bluepaint); //Z
+		c.drawLine(radarFrame.left, radarFrame.top+radarFrame.height()/2, radarFrame.width(), radarFrame.top+radarFrame.height()/2, redpaint); //X
+		c.drawLine(radarFrame.left+radarFrame.width()/2, radarFrame.top ,radarFrame.left+radarFrame.width()/2 , radarFrame.bottom, greenpaint); //Y
 		
 		
 		
-		c.drawRect(new Rect(10,10,50,50), blackpaint);
-		c.drawLine(framex, framey, framex+framewidth, frameheight, bluepaint);
-		c.drawLine(framex, framex+(framey/2), framex+framewidth, 30, redpaint);
-		c.drawLine(30, 10, 30, 50, greenpaint);
 		
 		
 	}
@@ -104,7 +104,8 @@ public class HUD {
 		//radarDraw(c);
 		axisDraw(c);
 		
-		Vector3D directionCam;
+		Vector3D directionCam = new Vector3D(10,10,10);
+		int xmin=mSensors.mySensorManager.AXIS_MINUS_X;
 		
 		
 		arrowDraw(c,directionCam);
