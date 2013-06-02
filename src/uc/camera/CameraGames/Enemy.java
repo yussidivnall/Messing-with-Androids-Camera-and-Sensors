@@ -32,46 +32,47 @@ public class Enemy {
 	}
 	public void attack(){}
 	
-	public void draw(Canvas c){
+	public void draw(Canvas c,Vector3D cameraVector){
+	
+		/*
 		if (mPosition.Z==0.0){
 			attack();
 		}else{
+			
+			double x_angle=Utils.getXAxisAngle(cameraVector);
+			double y_angle=Utils.getXAxisAngle(cameraVector);
 			int canvWidth=c.getWidth();
 			int canvHeight=c.getHeight();
-			
 			int center_x=canvWidth/2;
 			int center_y=canvHeight/2;
-			
+			int screen_x= center_x+10;
 			int imgWidth = mImage.getWidth();
 			int imgHeight = mImage.getHeight();
 			//double draw_ratio=Math.sqrt((float)imgWidth*imgWidth+imgHeight*imgHeight) /mPosition.Z;
 			double draw_ratio=1/mPosition.Z;
 			
 			
+			
 			int drawWidth=new Integer((int) (imgWidth*draw_ratio));
 			int drawHeight=new Integer((int)(imgHeight*draw_ratio));
+			
 			
 			//int drawWidth=500;
 			//int drawHeight=200;
 			
-			Log.d("Enemy.draw()", "draw ratio"+draw_ratio+" width:"+drawWidth +" height:"+drawHeight);
+			//Log.d("Enemy.draw()", "draw ratio"+draw_ratio+" width:"+drawWidth +" height:"+drawHeight);
 			
-			Rect rect = new Rect(center_x,center_y,center_x+drawWidth,center_y+drawHeight);
+			Rect rect = new Rect(screen_x,center_y,center_x+drawWidth,center_y+drawHeight);
 			
 			Paint paint = new Paint();
 			paint.setColor(Color.RED);
 			//c.drawBitmap(mImage, matrix,paint);
-			c.drawBitmap(mImage, null, rect, paint);
+			c.drawBitmap(mImage, null, rect, null);
 		}
-		
-		
-		
-		
-		
-		
-		
-		
+*/		
 	}
+
 	
 	
 }
+

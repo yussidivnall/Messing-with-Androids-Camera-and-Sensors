@@ -33,7 +33,7 @@ public class EnemyPositions {
 	
 	//draw, iterate through enemies, calculate if in visible range(-fieldOfView,fieldOfView) and draw
 	//TODO: Not implemented yet
-	public void draw(Canvas c){
+	public void draw(Canvas c,SensorsOutput sensors){
 		double fieldOfView = Math.PI/4;
 		
 		for (Enemy e : mEnemies){
@@ -52,7 +52,7 @@ public class EnemyPositions {
 			//Get angle from center to enemy
 			//subtract yrot
 			//check if in -pi/4,pi/4
-			e.draw(c);
+			e.draw(c,ePos);
 			//TODO - Finish this
 			
 		}

@@ -12,7 +12,7 @@ public class Vector3D {
 	
 	//If X,Y,Z represent a point, than this returns the angle from the centre, looking north
 	//TODO this \/
-	public void PositionToAngle(){
+	public Vector3D PositionToAngle(){
 		/*  
 		   
 		    
@@ -22,6 +22,14 @@ public class Vector3D {
 		float angle_x=(float) Math.atan(Z/Y);
 		float angle_y=(float) Math.atan(X/Z);
 		float angle_z=(float) Math.atan(Y/X);
+		
+		X=angle_x;
+		Y=angle_y;
+		Z=angle_z;
+		
+		return this;
 		//Log.d("Position to angle", "Rotation y:"+angle_y);
 	}
 }
+
+

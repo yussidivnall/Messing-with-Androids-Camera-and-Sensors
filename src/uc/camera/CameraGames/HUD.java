@@ -3,6 +3,8 @@ package uc.camera.CameraGames;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.util.Log;
 
 public class HUD {
 	SensorsOutput mSensors;
@@ -12,6 +14,11 @@ public class HUD {
 	Paint redpaint = new Paint();
 	Paint greenpaint = new Paint();
 	Paint bluepaint = new Paint();	
+	Paint blackpaint = new Paint();
+	
+	
+	Rect radarFrame=new Rect(0,0,200,200);
+	
 	
 	public void debugDraw(Canvas c){
 
@@ -28,10 +35,43 @@ public class HUD {
 	public void enemiesDraw(Canvas c,int cx, int cy,int radius){
 		for (Enemy e : mEnemies.getList()){
 			Vector3D pos=e.getPosition();
-			c.drawCircle((float)(cx+pos.X), (float)(cy+pos.Z), 2, redpaint);
+			
+			Log.d("HUD","drawing enemy x:"+(pos.X*10)+" y:"+(pos.Z*10));
+			
+			
+			//c.drawCircle((float)(cx+pos.X), (float)(cy+pos.Z), 2, redpaint);
+			c.drawCircle((float)(pos.X*10), (float)(cy+pos.Z*10
+					), 2, redpaint);
+			
 			
 			c.drawPoint((float)(cx+pos.X),(float)(cy+pos.Z),redpaint);
 		}
+		
+	}
+	
+	
+	
+	
+
+	public void arrowDraw(Canvas c,Vector3D vector){
+		
+		
+	}
+	
+	public void axisDraw(Canvas c){
+		int framex=10;
+		int framey=10;
+		int framewidth=200;
+		int frameheight=200;
+		Rect r= new Rect(framex,framey,framewidth,frameheight);
+		
+		
+		
+		c.drawRect(new Rect(10,10,50,50), blackpaint);
+		c.drawLine(framex, framey, framex+framewidth, frameheight, bluepaint);
+		c.drawLine(framex, framex+(framey/2), framex+framewidth, 30, redpaint);
+		c.drawLine(30, 10, 30, 50, greenpaint);
+		
 		
 	}
 	
@@ -60,7 +100,14 @@ public class HUD {
 	}
 	public void draw(Canvas c){
 		debugDraw(c);
-		radarDraw(c);
+		
+		//radarDraw(c);
+		axisDraw(c);
+		
+		Vector3D directionCam;
+		
+		
+		arrowDraw(c,directionCam);
 	}
 	
 }

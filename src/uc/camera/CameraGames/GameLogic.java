@@ -70,11 +70,23 @@ public class GameLogic {
 		}
 		
 	}
+	public void placeEnemy(Canvas c){
+		for (Enemy e : mEnemies.mEnemies){
+			Vector3D enemyScrPos=getScreenPosition(e.getPosition());
+			if (enemyScrPos != null){
+				
+				Rect r;
+				c.drawBitmap(e.mImage, (float)enemyScrPos.X,(float)enemyScrPos.Y,null);
+			}
+		}
+	}
 	
 	
 	public void placement(Canvas c){
 		Paint red = new Paint();red .setColor(Color.RED);
 		Paint green = new Paint();green.setColor(Color.GREEN);
+		
+		
 		
 		
 		Vector3D gdv=getScreenPosition(greenDotVector);
@@ -112,12 +124,17 @@ public class GameLogic {
 		if(c.getWidth()!=CanvasWidth) CanvasWidth=c.getWidth();
 		if(c.getHeight()!=CanvasHeight) CanvasHeight=c.getHeight();
 	}
+	
+	
 	public void draw(Canvas canvas){
 		updateCanvasSize(canvas);
 		
 		
 		//placement(canvas); //TODO get rid of this...
-		mEnemies.draw(canvas);
+		placeEnemy(canvas);
+		
+		
+		mEnemies.draw(canvas,mSensors);
 		mHUD.draw(canvas);
 		
 		/*drawPoint(canvas);

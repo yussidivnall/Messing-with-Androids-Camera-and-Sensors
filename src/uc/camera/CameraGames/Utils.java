@@ -24,4 +24,13 @@ public class Utils {
 		return ret;
 		//return (Math.asin( (Math.sin(90)*opp)/hyp ));
 	}
+	
+	
+	public Vector3D screen_position_from_camera(Vector3D cam,Vector3D v){
+		
+		
+		return null;
+		
+	}
+	
 }
