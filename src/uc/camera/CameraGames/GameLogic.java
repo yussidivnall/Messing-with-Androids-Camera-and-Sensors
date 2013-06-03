@@ -1,11 +1,7 @@
 package uc.camera.CameraGames;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.*;
+import android.util.Log;
 import android.content.res.Resources;
 
 public class GameLogic {
@@ -48,7 +44,9 @@ public class GameLogic {
 	
 	public Vector3D getScreenPosition(Vector3D v){
 		//Returns screen coordinates of point with Z being distance
-		double distance=Utils.getMagnitude(myVector);
+		//double distance=Utils.getMagnitude(myVector);
+		double distance=10;
+		
 		double rotation_y=Utils.getYAxisAngle(myVector);
 		double difference_y=mSensors.rotation_y-rotation_y; //difference in angle on the y axis between the camera and the point's position
 		
@@ -70,55 +68,37 @@ public class GameLogic {
 		}
 		
 	}
-	public void placeEnemy(Canvas c){
+	public void placeEnemy(Canvas c,Vector3D camRot){
+		double camThetaY=camRot.Y*Math.PI /180;
+		double viewRange = Math.PI/2; // This might need tunning
+		double leftFieldOfView = camThetaY-viewRange/2;
+		double rightFieldOfView = camThetaY+viewRange/2;
+		
+		
 		for (Enemy e : mEnemies.mEnemies){
+			double enemyThetaY;
+			if(e.mPosition.X==0){
+				if(e.mPosition.Z <0)enemyThetaY=Math.PI/4;
+				else enemyThetaY=3*Math.PI/4;
+			}else{
+				enemyThetaY=Math.atan(e.mPosition.Y/e.mPosition.X); // angle of the enemy on Y
+			}
+			Log.d("GameLogic.placeEnemy","Enemy Theta Y: "+enemyThetaY+" ;CameraThetaY: "+camThetaY);
+			
+			
+			
 			Vector3D enemyScrPos=getScreenPosition(e.getPosition());
 			if (enemyScrPos != null){
 				
 				Rect r;
 				c.drawBitmap(e.mImage, (float)enemyScrPos.X,(float)enemyScrPos.Y,null);
+				c.drawCircle((float)enemyScrPos.X, (float)enemyScrPos.Y, 10, new Paint(Color.CYAN));
 			}
 		}
 	}
 	
 	
-	public void placement(Canvas c){
-		Paint red = new Paint();red .setColor(Color.RED);
-		Paint green = new Paint();green.setColor(Color.GREEN);
-		
-		
-		
-		
-		Vector3D gdv=getScreenPosition(greenDotVector);
-		Vector3D rdv=getScreenPosition(blueDotVector);
-		if(gdv!=null){
-			c.drawCircle((float)gdv.X, (float)gdv.Y, (float)gdv.Z*3, green);
-		}
-		if(rdv!=null){
-			c.drawCircle((float)rdv.X, (float)rdv.Y, (float)rdv.Z*3, red);
-		}
-		
-		Vector3D p = getScreenPosition(myVector);
-		if(p!=null){
-			c.drawCircle((float)p.X, (float)p.Y, (float)p.Z*3, green);
-		}
-		/*
-		double distance=Utils.getMagnitude(myVector);
-		double rotation_y=Utils.getYAxisAngle(myVector);
-		double difference_y=mySensors.rotation_y-rotation_y; //difference in angle on the y axis between the camera and the point's position
-		
-		double rotation_x=Utils.getXAxisAngle(myVector);
-		double difference_x=mySensors.rotation_x-rotation_x;
-		
-		if(difference_y > -VIEWRANGE && difference_y < VIEWRANGE){
-			float unit=c.getWidth()/(2*VIEWRANGE);
-			//double position = c.getWidth()/2*difference;
-			float x=(float)(c.getWidth()/2-(unit*difference_y));
-			//c.drawCircle((float)(c.getWidth()/2-(unit*difference_y)), c.getHeight()/2, 10, paint);
-			c.drawCircle(x, c.getHeight()/2, 10, paint);
-		}
-		*/
-	}
+
 	
 	public void updateCanvasSize(Canvas c){
 		if(c.getWidth()!=CanvasWidth) CanvasWidth=c.getWidth();
@@ -131,10 +111,12 @@ public class GameLogic {
 		
 		
 		//placement(canvas); //TODO get rid of this...
-		placeEnemy(canvas);
+		
+		Vector3D camRot = mSensors.getOrientation();
+		placeEnemy(canvas,camRot);
 		
 		
-		mEnemies.draw(canvas,mSensors);
+		//mEnemies.draw(canvas,mSensors);
 		mHUD.draw(canvas);
 		
 		/*drawPoint(canvas);

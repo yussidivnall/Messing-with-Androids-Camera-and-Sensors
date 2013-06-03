@@ -24,6 +24,7 @@ public class CameraGames extends Activity {
 	Camera mCamera;
 	OverlayView overlay;
 	GameLogic mGameLogic;
+	SensorsOutput mSensors;
 	
 	//GLSurfaceView mGLSurfaceView;
     /** Called when the activity is first created. */
@@ -32,8 +33,8 @@ public class CameraGames extends Activity {
     	super.onCreate(savedInstanceState);
     	try{
         CameraPreview preview = new CameraPreview(this); //Grab camera layer
-        SensorsOutput sensors = new SensorsOutput((SensorManager)getSystemService(SENSOR_SERVICE)); //Sensors 
-        overlay= new OverlayView(this,sensors);//Grab OverlayView
+        mSensors = new SensorsOutput((SensorManager)getSystemService(SENSOR_SERVICE)); //Sensors 
+        overlay= new OverlayView(this,mSensors);//Grab OverlayView
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setContentView(preview);  //Set camera preview as base content
         this.addContentView(overlay, new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)); //add another content
@@ -49,24 +50,36 @@ public class CameraGames extends Activity {
     }
     @Override 
     protected void onPause(){
-    	super.onPause();
-    	overlay.pause();
-    	Log.d("onPause", "Called");
+    	try{
+	    	super.onPause();
+	    	//sensors.wait();
+	    	//mCamera.release();
+	    	overlay.pause();
+	    	Log.d("onPause", "Called");
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
     @Override
     protected void onResume(){
     	super.onResume();
     	overlay.resume();
+    	mSensors.resume();
     	Log.d("onResume", "Called");
     }
     @Override
    	protected void onRestart(){
     	super.onRestart();
+    	onResume();
+    	mSensors.resume();
     	Log.d("onRestart", "Called");
     }
     @Override
     protected void onStop(){
     	super.onStop();
+    	//onPause();
+    	overlay.pause();
+    	mSensors.pause();
     	Log.d("onStop", "Called");
     }
     

@@ -7,11 +7,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Message;
+//import android.graphics.Color;
+//import android.graphics.Paint;
+//import android.graphics.drawable.Drawable;
+//import android.os.Handler;
+//import android.os.Message;
 import android.util.Log;
 import android.view.View;
 
@@ -19,6 +19,8 @@ public class OverlayView extends View {
 	private class UpdateTimerTask extends TimerTask {
 		@Override
 		public void run() {
+			
+			
 			update();
 			postInvalidate();
 		}
@@ -55,18 +57,18 @@ public class OverlayView extends View {
 		 */
 		
 		Log.d("LoadLevel", "Creating enemies");
-		Enemy enemyA = new Enemy(-20, -30, -20, 999, bmp);
-		Enemy enemyB = new Enemy(10, 30, -10, 999, bmp);
+		Enemy enemyA = new Enemy(0, 0, 10, 999, bmp);
+		Enemy enemyB = new Enemy(10, 0, 10, 999, bmp);
 		Enemy enemyC = new Enemy(2, -30, -20, 999, bmp);
-		Enemy enemyD = new Enemy(-30, 7, -30, 999, bmp);
-		Enemy enemyE = new Enemy(40, -20, -4, 999, bmp);
-		Enemy enemyF = new Enemy(50, 10, -9, 999, bmp);
+		Enemy enemyD = new Enemy(-3, 7, -3, 999, bmp);
+		Enemy enemyE = new Enemy(15, -15, -4, 999, bmp);
+		Enemy enemyF = new Enemy(5, -5, -9, 999, bmp);
 		
 		
 		Log.d("LoadLevel", "Got enemy? " + enemyA.equals(null));
 		mEnemies.add(enemyA); mEnemies.add(enemyB);
-		mEnemies.add(enemyC); mEnemies.add(enemyD);
-		mEnemies.add(enemyF); mEnemies.add(enemyE);
+		//mEnemies.add(enemyC); mEnemies.add(enemyD);
+		//mEnemies.add(enemyF); mEnemies.add(enemyE);
 		Log.d("LoadLevel", "End of LoadLevel, in OverlayView");
 	}
 
@@ -79,7 +81,7 @@ public class OverlayView extends View {
 
 		myGameLogic = new GameLogic(mySensors, mEnemies);
 		timer = new Timer();
-		timer.schedule(new UpdateTimerTask(), 0, step);
+		timer.schedule(new UpdateTimerTask(), (long)0.1, step);
 
 		this.invalidate();
 
@@ -108,8 +110,8 @@ public class OverlayView extends View {
 
 	protected void onDraw(Canvas c) {
 		this.requestLayout();
-		Paint paint = new Paint();
-		paint.setColor(Color.RED);
+		//Paint paint = new Paint();
+		//paint.setColor(Color.RED);
 
 		// c.drawText("View dimension:"+this.getWidth()+"x"+this.getHeight(), 0,
 		// 50, paint);

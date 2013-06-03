@@ -9,17 +9,109 @@ import android.util.Log;
 public class HUD {
 	SensorsOutput mSensors;
 	EnemyPositions mEnemies;
+	Radar mRadar;
+	
+	
+	class Radar{
+		Rect radarFrame=new Rect(0,0,150,150);
+		public Radar(int x,int y,int w,int h){
+			
+		}
+		//draw the x,y,z axis
+		public void axisDraw(Canvas c){
+			c.drawRect(radarFrame, blackpaint);		
+			c.drawLine(radarFrame.left, radarFrame.top, radarFrame.bottom, radarFrame.width(), bluepaint); //Z
+			c.drawLine(radarFrame.left, radarFrame.top+radarFrame.height()/2, radarFrame.width(), radarFrame.top+radarFrame.height()/2, redpaint); //X
+			c.drawLine(radarFrame.left+radarFrame.width()/2, radarFrame.top ,radarFrame.left+radarFrame.width()/2 , radarFrame.bottom, greenpaint); //Y
+		}
+		//draw a circle in the enemy coord
+		public void enemiesDraw(Canvas c,EnemyPositions enemies){
+			for (Enemy e : enemies.getList()){
+				Vector3D epos=e.getPosition();
+				//Log.d("HUD.Radar.enemiesDraw", ""+epos.X+" "+epos.Y+" "+epos.Z);
+				int[] pt=mRadar.getXYCoord(epos);
+				c.drawCircle(pt[0], pt[1], 2, redpaint);
+				gridDraw(c,epos);
+			}
+		}
+		
+		//draw a box from axis to point 
+		public void gridDraw(Canvas c,Vector3D point){
+			Vector3D l1start=new Vector3D(point.X,0,0);
+			Vector3D l1end=  new Vector3D(point.X,0,point.Z);
+			c.drawLine(getXYCoord(l1start)[0],getXYCoord(l1start)[1], getXYCoord(l1end)[0], getXYCoord(l1end)[1], graypaint);
+			
+			Vector3D l2start=new Vector3D(0,0,point.Z);
+			Vector3D l2end=new Vector3D(point.X,0,point.Z);
+			c.drawLine(getXYCoord(l2start)[0],getXYCoord(l2start)[1], getXYCoord(l2end)[0], getXYCoord(l2end)[1], graypaint);
+			
+			Vector3D l3start=new Vector3D(point.X,0,point.Z);
+			Vector3D l3end=new Vector3D(point.X,point.Y,point.Z);
+			c.drawLine(getXYCoord(l3start)[0],getXYCoord(l3start)[1], getXYCoord(l3end)[0], getXYCoord(l3end)[1], graypaint);
+			
+			
+			
+		}
+		
+		
+		public void rayDraw(Canvas c,Vector3D rotation){
+			double thetaY= rotation.Y*Math.PI/180;
+			double thetaZ= rotation.Z*Math.PI/180;
+			
+			
+			double magnitude=50;
+			double x=magnitude * Math.cos(thetaY);
+			double z=magnitude * Math.sin(thetaY);
+			double y=magnitude * Math.sin(thetaZ);
+			Vector3D endpoint = new Vector3D(x,y,z);
+			gridDraw(c,endpoint);
+			
+			int[] start = getXYCenter();
+			int[] end = getXYCoord(endpoint);
+			c.drawLine(start[0], start[1], end[0], end[1], redpaint);
+			
+		}
+		//get radar screen center;
+		public int[] getXYCenter(){
+			int x=radarFrame.left+radarFrame.width()/2;
+			int y=radarFrame.left+radarFrame.height()/2;
+			int ret[]={x,y};
+			return ret;
+		}
+		
+		public int[] getXYCoord(Vector3D position){
+			//Calculate as, (ortho)
+			//x=pos.x-(1/2)*pos.z
+			//y=pos.y-(1/2)*pos.z
+			
+			int[] radcenter=getXYCenter();
+			
+			int x=(int)(radcenter[0]+position.X-(position.Z/2) );
+			int y=(int)(radcenter[1]+position.Y-(position.Z/2) );
+			//Log.d("HUD.Radar getXYCoord", "returning: x:"+x+" ,y:"+y);
+			int ret[] = {x,y};
+			return ret;
+		}
+	}
+	
+	
+	
+	
+	
 	
 	
 	Paint redpaint = new Paint();
 	Paint greenpaint = new Paint();
 	Paint bluepaint = new Paint();	
 	Paint blackpaint = new Paint();
+	Paint graypaint = new Paint();
+	//graypaint.setColor(android.graphics.Color.GRAY);
 	
 	
-	Rect radarFrame=new Rect(0,0,100,100);
 	
 	
+	
+
 	public void debugDraw(Canvas c){
 
 		double rotation_X_axis=mSensors.rotation_x;
@@ -32,50 +124,17 @@ public class HUD {
 		c.drawText("rotation on Z:"+rotation_Z_axis, 50, 70, bluepaint);
 	}
 	
-	public void enemiesDraw(Canvas c,int cx, int cy,int radius){
-		for (Enemy e : mEnemies.getList()){
-			Vector3D pos=e.getPosition();
-			int radarCenterX=radarFrame.centerX();
-			int radarCenterY=radarFrame.centerY();
-			
-			
-			
-			//Log.d("HUD","drawing enemy x:"+(pos.X*10)+" y:"+(pos.Z*10));
-			
-			
-			//c.drawCircle((float)(cx+pos.X), (float)(cy+pos.Z), 2, redpaint);
-			c.drawCircle((float)(pos.X*10), (float)(cy+pos.Z*10
-					), 2, redpaint);
-			
-			
-			c.drawPoint((float)(cx+pos.X),(float)(cy+pos.Z),redpaint);
-		}
-		
-	}
+	
 	
 	
 	
 	
 
-	public void arrowDraw(Canvas c,Vector3D vector){
-		
-		
-	}
+	public void arrowDraw(Canvas c,Vector3D vector){}
 	
-	public void axisDraw(Canvas c){
-		c.drawRect(radarFrame, blackpaint);
-		
-		c.drawLine(radarFrame.left, radarFrame.top, radarFrame.bottom, radarFrame.width(), bluepaint); //Z
-		c.drawLine(radarFrame.left, radarFrame.top+radarFrame.height()/2, radarFrame.width(), radarFrame.top+radarFrame.height()/2, redpaint); //X
-		c.drawLine(radarFrame.left+radarFrame.width()/2, radarFrame.top ,radarFrame.left+radarFrame.width()/2 , radarFrame.bottom, greenpaint); //Y
-		
-		
-		
-		
-		
-	}
+
 	
-	
+	/*
 	//Basic top down radar, (Just angle around y-axis)
 	public void radarDraw(Canvas c){
 		int cx=30; int cy=30; int radius=30;//circle centre, radius
@@ -85,8 +144,8 @@ public class HUD {
 		
 		c.drawCircle(cx, cy, radius, bluepaint);
 		c.drawLine(cx, cy, xi, yi, greenpaint);
-		enemiesDraw(c,cx,cy,radius);
-	}
+		//enemiesDraw(c,cx,cy,radius);
+	}*/
 	
 	
 	
@@ -94,21 +153,46 @@ public class HUD {
 	public HUD(SensorsOutput so,EnemyPositions enemies){
 		mSensors =so;
 		mEnemies = enemies;
+		mRadar = new Radar(0,0,200,200);
+		
 		
 		redpaint.setColor(Color.RED);greenpaint.setColor(Color.GREEN);bluepaint.setColor(Color.BLUE);
+		graypaint.setColor(Color.GRAY);
 
 	}
 	public void draw(Canvas c){
 		debugDraw(c);
 		
 		//radarDraw(c);
-		axisDraw(c);
+		mRadar.axisDraw(c);
 		
-		Vector3D directionCam = new Vector3D(10,10,10);
-		int xmin=mSensors.mySensorManager.AXIS_MINUS_X;
+		//c.drawCircle(mRadar.getXYCenter()[0],mRadar.getXYCenter()[1], 10, greenpaint);		
+		//For testing:
+		//Vector3D somePoint = new Vector3D(10,0,0);
+		//Vector3D somePoint2 = new Vector3D(10,0,20);
+		//int pt2d[] = mRadar.getXYCoord(somePoint);
+		//int pt22d[] = mRadar.getXYCoord(somePoint2);
+		//c.drawCircle(pt2d[0],pt2d[1], 5, bluepaint);
+		//c.drawCircle(pt22d[0],pt22d[1], 5, bluepaint);
+		//c.drawLine(pt2d[0],pt2d[1], pt22d[0], pt22d[1], redpaint);
+		
+		//float[] RotationMatrix = new float[9];
+		//float[] InclinationMatrix =new float[9];
+		//float[] gravity=new float[3];
+		//float[] geomagnetic = null;
+		//mSensors.mySensorManager.getRotationMatrix(RotationMatrix, InclinationMatrix, gravity, geomagnetic);
 		
 		
-		arrowDraw(c,directionCam);
+		
+		
+		
+		Vector3D camRot = mSensors.getOrientation();
+		int xmin=mSensors.mSensorManager.AXIS_MINUS_X;
+		
+		mRadar.enemiesDraw(c,mEnemies);
+		mRadar.rayDraw(c,camRot);
+		
+		//arrowDraw(c,orienationCam);
 	}
 	
 }

@@ -7,21 +7,22 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 public class SensorsOutput implements SensorEventListener{
-	public SensorManager mySensorManager;
+	public SensorManager mSensorManager;
+	Sensor orienationSensor;
+	
 	public float rotation_x,rotation_y,rotation_z;
 	float acceleration_x,acceleration_y,acceleration_z;
 	//public float x,y,z;
 	
 	public SensorsOutput(SensorManager sm){
 		//super();
-		mySensorManager=sm;
+		mSensorManager=sm;
 		
 		//mySensorManager = (SensorManager)super.getSystemService(SENSOR_SERVICE);
-		Sensor oSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-		
-        Sensor aSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		mySensorManager.registerListener(this, oSensor, SensorManager.SENSOR_DELAY_UI);
-        mySensorManager.registerListener(this, aSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		orienationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        //Sensor aSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		mSensorManager.registerListener(this, orienationSensor, SensorManager.SENSOR_DELAY_GAME);
+        //mySensorManager.registerListener(this, aSensor, SensorManager.SENSOR_DELAY_NORMAL);
         
 	}
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -29,6 +30,7 @@ public class SensorsOutput implements SensorEventListener{
 		
 	}
 
+	
 	public void onSensorChanged(SensorEvent event) {
 		// TODO Auto-generated method stub
 		if(event.sensor.getType()==Sensor.TYPE_ORIENTATION){
@@ -43,7 +45,20 @@ public class SensorsOutput implements SensorEventListener{
 			acceleration_z=event.values[2];
 		}
 	}
+	public Vector3D getOrientation(){
+		Vector3D ret = new Vector3D(rotation_x,rotation_y,rotation_z);
+		//float[] values;
+		//float[] R;
+		//mSensorManager.getOrientation(R, values);
+		return ret;
+	}
 	
+	public void pause(){
+		mSensorManager.unregisterListener(this);
+	}
+	public void resume(){
+		mSensorManager.registerListener(this, orienationSensor, SensorManager.SENSOR_DELAY_UI);
+	}
 	
 
 }

@@ -22,12 +22,12 @@ public class Vector3D {
 		float angle_x=(float) Math.atan(Z/Y);
 		float angle_y=(float) Math.atan(X/Z);
 		float angle_z=(float) Math.atan(Y/X);
+		Vector3D ret=new Vector3D(angle_x,angle_y,angle_z);
+		//X=angle_x;
+		//Y=angle_y;
+		//Z=angle_z;
 		
-		X=angle_x;
-		Y=angle_y;
-		Z=angle_z;
-		
-		return this;
+		return ret;
 		//Log.d("Position to angle", "Rotation y:"+angle_y);
 	}
 }
