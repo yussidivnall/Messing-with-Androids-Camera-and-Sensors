@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.Log;
 
 public class HUD {
@@ -13,17 +14,37 @@ public class HUD {
 	
 	
 	class Radar{
-		Rect radarFrame=new Rect(0,0,150,150);
+		Rect radarFrame=new Rect(200,200,50,50);
 		public Radar(int x,int y,int w,int h){
 			
 		}
+		
+		
+		
 		//draw the x,y,z axis
 		public void axisDraw(Canvas c){
 			c.drawRect(radarFrame, blackpaint);		
-			c.drawLine(radarFrame.left, radarFrame.top, radarFrame.bottom, radarFrame.width(), bluepaint); //Z
+//			c.drawLine(radarFrame.left, radarFrame.top, radarFrame.bottom, radarFrame.width(), bluepaint); //Z
+			c.drawLine(radarFrame.left, radarFrame.top, radarFrame.bottom, radarFrame.right, bluepaint); //Z
 			c.drawLine(radarFrame.left, radarFrame.top+radarFrame.height()/2, radarFrame.width(), radarFrame.top+radarFrame.height()/2, redpaint); //X
 			c.drawLine(radarFrame.left+radarFrame.width()/2, radarFrame.top ,radarFrame.left+radarFrame.width()/2 , radarFrame.bottom, greenpaint); //Y
 		}
+		//draw field of vision
+		public void fovDraw(Canvas c,Vector3D camRot){
+			
+
+			rayDraw(c, new Vector3D(0,-0.5,0) );
+			rayDraw(c, new Vector3D(0,0.5,0) );
+			
+			RectF oval = new RectF(0,0,100,150);
+			boolean useCenter=true;
+			float startAngle = 10f;
+			float sweepAngle=5f;
+			c.drawArc(oval, startAngle, sweepAngle, useCenter, new Paint(Color.WHITE));
+			
+		}
+		
+		
 		//draw a circle in the enemy coord
 		public void enemiesDraw(Canvas c,EnemyPositions enemies){
 			for (Enemy e : enemies.getList()){
@@ -163,34 +184,14 @@ public class HUD {
 	public void draw(Canvas c){
 		debugDraw(c);
 		
-		//radarDraw(c);
+		
 		mRadar.axisDraw(c);
-		
-		//c.drawCircle(mRadar.getXYCenter()[0],mRadar.getXYCenter()[1], 10, greenpaint);		
-		//For testing:
-		//Vector3D somePoint = new Vector3D(10,0,0);
-		//Vector3D somePoint2 = new Vector3D(10,0,20);
-		//int pt2d[] = mRadar.getXYCoord(somePoint);
-		//int pt22d[] = mRadar.getXYCoord(somePoint2);
-		//c.drawCircle(pt2d[0],pt2d[1], 5, bluepaint);
-		//c.drawCircle(pt22d[0],pt22d[1], 5, bluepaint);
-		//c.drawLine(pt2d[0],pt2d[1], pt22d[0], pt22d[1], redpaint);
-		
-		//float[] RotationMatrix = new float[9];
-		//float[] InclinationMatrix =new float[9];
-		//float[] gravity=new float[3];
-		//float[] geomagnetic = null;
-		//mSensors.mySensorManager.getRotationMatrix(RotationMatrix, InclinationMatrix, gravity, geomagnetic);
-		
-		
-		
-		
-		
 		Vector3D camRot = mSensors.getOrientation();
 		int xmin=mSensors.mSensorManager.AXIS_MINUS_X;
 		
 		mRadar.enemiesDraw(c,mEnemies);
 		mRadar.rayDraw(c,camRot);
+		mRadar.fovDraw(c,camRot);
 		
 		//arrowDraw(c,orienationCam);
 	}

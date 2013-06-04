@@ -42,10 +42,13 @@ public class GameLogic {
 	}
 	
 	
+	
+	//ERROR HERE
+	//THIS IS NOT MODULUS, EI, if 
 	public Vector3D getScreenPosition(Vector3D v){
 		//Returns screen coordinates of point with Z being distance
 		//double distance=Utils.getMagnitude(myVector);
-		double distance=10;
+		double distance=Utils.getMagnitude(v);
 		
 		double rotation_y=Utils.getYAxisAngle(myVector);
 		double difference_y=mSensors.rotation_y-rotation_y; //difference in angle on the y axis between the camera and the point's position
@@ -55,16 +58,25 @@ public class GameLogic {
 		float center_x=CanvasWidth/2;
 		float center_y=CanvasHeight/2;
 		
+		
+		
+		//if (rotation_y+VIEWRANGE>360)
+		//{
+		//	Log.d("GameLogic.getScreenPosition","rotation+VIEWRANGE bigger then 360"+(rotation_y+VIEWRANGE));
+		//}
+		//Log.d("GameLogic.getScreenPosition", "rotation_y"+rotation_y +"  Viewrange:"+VIEWRANGE);
+		
+		
 		if(difference_y > -VIEWRANGE && difference_y < VIEWRANGE){
 			float unit_x=CanvasWidth/(2*VIEWRANGE);
 			float unit_y=CanvasHeight/(2*VIEWRANGE);
 			
 			float x=(float)(center_x-(unit_x*difference_y));
-			float y=(float)(center_y-(unit_y*difference_x)); // TODO
+			float y=(float)(center_y-(unit_y*difference_x)); // TODO fix this :-?
 			//Vector3D ret = new Vector3D(x,y,distance);
-			Vector3D ret = new Vector3D(x,10,distance);
+			Vector3D ret = new Vector3D(x,10,distance); //for now doom like ,not quake like :-/, rotate on y only
 			return ret;
-		}else{
+		}else{//HERE, RETURN SOMETHING...
 			return null;
 		}
 		
@@ -75,9 +87,11 @@ public class GameLogic {
 		double leftFieldOfView = camThetaY+viewRange/2;
 		double rightFieldOfView = camThetaY-viewRange/2;
 		
-		Log.d("GameLogic.placeEnemy","=========================");
+		//Log.d("GameLogic.placeEnemy","=========================");
 		for (Enemy e : mEnemies.mEnemies){
 			double enemyThetaY;
+			
+			
 			
 			//Avoid division by 0 :-/
 			if(e.mPosition.X==0){
@@ -101,9 +115,26 @@ public class GameLogic {
 			
 			Vector3D enemyScrPos=getScreenPosition(e.getPosition());
 			if (enemyScrPos != null){
+				try{
+					Rect r;
+					float x=(float)enemyScrPos.X-e.mImage.getWidth()/2;
+					float y=20;
+					float enemyDistance=(float)Utils.getMagnitude(e.mPosition);
+					Matrix matrix=new Matrix();
+					matrix.setTranslate(x, y);
+					
+					float scale = 1/enemyDistance;
+					
+					matrix.preScale(scale, scale);
+					//matrix.postScale(1,1);
+					c.drawBitmap(e.mImage, matrix, null);
+					
+					
+				}catch(Exception excp){
+					excp.printStackTrace();
+				}
 				
-				Rect r;
-				c.drawBitmap(e.mImage, (float)enemyScrPos.X,(float)enemyScrPos.Y,null);
+				//c.drawBitmap(e.mImage, (float)enemyScrPos.X,(float)enemyScrPos.Y,null);
 				c.drawCircle((float)enemyScrPos.X, (float)enemyScrPos.Y, 10, new Paint(Color.CYAN));
 			}
 		}

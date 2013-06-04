@@ -57,18 +57,18 @@ public class OverlayView extends View {
 		 */
 		
 		Log.d("LoadLevel", "Creating enemies");
-		Enemy enemyA = new Enemy(0, 0, 10, 999, bmp);
+		Enemy enemyA = new Enemy(1, 1, 1, 999, bmp);
 		Enemy enemyB = new Enemy(0, 0, -10, 999, bmp);
-		Enemy enemyC = new Enemy( 10,0, 0, 999, bmp);
-		Enemy enemyD = new Enemy(-10,0, 0, 999, bmp);
+		Enemy enemyC = new Enemy( 5,30, 0, 999, bmp);
+		Enemy enemyD = new Enemy(10,0, 20, 999, bmp);
 		Enemy enemyE = new Enemy(15, -15, -4, 999, bmp);
 		Enemy enemyF = new Enemy(5, -5, -9, 999, bmp);
 		
 		
 		Log.d("LoadLevel", "Got enemy? " + enemyA.equals(null));
 		mEnemies.add(enemyA); mEnemies.add(enemyB);
-		//mEnemies.add(enemyC); mEnemies.add(enemyD);
-		//mEnemies.add(enemyF); mEnemies.add(enemyE);
+		mEnemies.add(enemyC); mEnemies.add(enemyD);
+		mEnemies.add(enemyF); mEnemies.add(enemyE);
 		Log.d("LoadLevel", "End of LoadLevel, in OverlayView");
 	}
 
