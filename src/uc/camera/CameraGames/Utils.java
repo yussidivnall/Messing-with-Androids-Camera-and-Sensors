@@ -1,5 +1,7 @@
 package uc.camera.CameraGames;
 
+import android.graphics.Rect;
+
 public class Utils {
 	public static double getMagnitude(Vector3D vector){
 		double ret=Math.sqrt(vector.X+vector.Y+vector.Z);
@@ -26,11 +28,16 @@ public class Utils {
 	}
 	
 	
-	public Vector3D screen_position_from_camera(Vector3D cam,Vector3D v){
-		
-		
-		return null;
-		
+	
+	
+	//Map's a point from game's coord system to screen returns int[x,y]
+	public Rect screen_position_from_camera(Vector3D camDir,Vector3D point,double field){
+			double distance=Math.sqrt(point.X*point.X + point.Y*point.Y + point.Z*point.Z);
+			
+			
+			
+			return null;
 	}
+	
 	
 }

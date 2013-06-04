@@ -35,7 +35,7 @@ public class HUD {
 			}
 		}
 		
-		//draw a box from axis to point 
+		//draw a box from axis to point  (asymptotes)
 		public void gridDraw(Canvas c,Vector3D point){
 			Vector3D l1start=new Vector3D(point.X,0,0);
 			Vector3D l1end=  new Vector3D(point.X,0,point.Z);

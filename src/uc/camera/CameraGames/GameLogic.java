@@ -61,7 +61,8 @@ public class GameLogic {
 			
 			float x=(float)(center_x-(unit_x*difference_y));
 			float y=(float)(center_y-(unit_y*difference_x)); // TODO
-			Vector3D ret = new Vector3D(x,y,distance);
+			//Vector3D ret = new Vector3D(x,y,distance);
+			Vector3D ret = new Vector3D(x,10,distance);
 			return ret;
 		}else{
 			return null;
@@ -71,19 +72,30 @@ public class GameLogic {
 	public void placeEnemy(Canvas c,Vector3D camRot){
 		double camThetaY=camRot.Y*Math.PI /180;
 		double viewRange = Math.PI/2; // This might need tunning
-		double leftFieldOfView = camThetaY-viewRange/2;
-		double rightFieldOfView = camThetaY+viewRange/2;
+		double leftFieldOfView = camThetaY+viewRange/2;
+		double rightFieldOfView = camThetaY-viewRange/2;
 		
-		
+		Log.d("GameLogic.placeEnemy","=========================");
 		for (Enemy e : mEnemies.mEnemies){
 			double enemyThetaY;
+			
+			//Avoid division by 0 :-/
 			if(e.mPosition.X==0){
 				if(e.mPosition.Z <0)enemyThetaY=Math.PI/4;
 				else enemyThetaY=3*Math.PI/4;
 			}else{
 				enemyThetaY=Math.atan(e.mPosition.Y/e.mPosition.X); // angle of the enemy on Y
+				//This outputs from -pi to pi, but camera is from 0 to 2pi, adjust
+				enemyThetaY+=Math.PI;
 			}
-			Log.d("GameLogic.placeEnemy","Enemy Theta Y: "+enemyThetaY+" ;CameraThetaY: "+camThetaY);
+			
+			if (enemyThetaY > rightFieldOfView && enemyThetaY < leftFieldOfView){ //enemy in view range in thetaY
+				//Calculate position on screen
+				
+			}
+			
+			
+			//Log.d("GameLogic.placeEnemy","Enemy Theta Y: "+enemyThetaY+" ;CameraThetaY: "+camThetaY);
 			
 			
 			
