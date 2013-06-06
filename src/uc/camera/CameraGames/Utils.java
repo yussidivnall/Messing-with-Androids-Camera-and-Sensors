@@ -11,7 +11,9 @@ public class Utils {
 	//Returns the X and Y axis angle in respect to point {0,0,0}
 	//getYAxisAngle: Y axis, relative to north
 	public static double getYAxisAngle(Vector3D vector){
-		double ret=Math.atan(vector.Z/vector.X)*180/Math.PI;
+		double ret=Math.atan(vector.Z/vector.X);
+		//This is from -Pi to Pi, normalize to 0 to 2PI
+		ret+=Math.PI;
 		return ret;
 	}
 	//getXAxisAngle: relative to floor

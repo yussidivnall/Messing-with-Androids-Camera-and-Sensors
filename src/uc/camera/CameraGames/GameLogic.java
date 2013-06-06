@@ -5,7 +5,8 @@ import android.util.Log;
 import android.content.res.Resources;
 
 public class GameLogic {
-	public final float VIEWRANGE=45/3f;
+	//public final float VIEWRANGE=45/3f;
+	public final float VIEWRANGE=(float)Math.PI/8;
 	
 	SensorsOutput 	mSensors;
 	EnemyPositions 	mEnemies;
@@ -48,13 +49,51 @@ public class GameLogic {
 	public Vector3D getScreenPosition(Vector3D v){
 		//Returns screen coordinates of point with Z being distance
 		//double distance=Utils.getMagnitude(myVector);
+		
+		double camThetaY=mSensors.getOrientation().Y;
+		
 		double distance=Utils.getMagnitude(v);
+		double thetaY=Utils.getYAxisAngle(v);
+		Log.d("GameLogic.getScreenPosition", "=======");
+		Log.d("GameLogic.getScreenPosition", "ThetaY"+thetaY);
+		if (camThetaY>=0 &&thetaY < Math.PI/2 ){ 
+			Log.d("GameLogic.getScreenPosition", "Q1");
+		}//Q1
+		else if (camThetaY>=Math.PI/2 &&thetaY < Math.PI ){
+			Log.d("GameLogic.getScreenPosition", "Q2");
+		} //Q2
+		else if (camThetaY>=Math.PI &&thetaY < 3*Math.PI/4 ){
+			Log.d("GameLogic.getScreenPosition", "Q3");
+		} //Q3
+		else if (camThetaY>=3*Math.PI/4 &&thetaY < 2*Math.PI ){
+			Log.d("GameLogic.getScreenPosition", "Q4");
+		} //Q4
+		else if (camThetaY>2*Math.PI){
+			Log.d("GameLogic.getScreenPosition", "Bigger then 2PI, needs adjusting errorish");
+		}
+		
 		
 		double rotation_y=Utils.getYAxisAngle(myVector);
-		double difference_y=mSensors.rotation_y-rotation_y; //difference in angle on the y axis between the camera and the point's position
-		
+		if(rotation_y-VIEWRANGE <0){
+//			Log.d("GameLogic","rotation y - viewrange <0");
+		}
 		double rotation_x=Utils.getXAxisAngle(myVector);
+		if(rotation_x-VIEWRANGE <0){
+//			Log.d("GameLogic","rotation x - viewrange <0");
+		}		
+		
+		double difference_y=mSensors.rotation_y-rotation_y; //difference in angle on the y axis between the camera and the point's position
+		if (difference_y <0){
+//			Log.d("GameLogic","diff y <0");
+			difference_y+=2*Math.PI;
+		}
+		
+
 		double difference_x=mSensors.rotation_x-rotation_x;
+		if (difference_x < 0){
+			difference_x+=2*Math.PI;
+		}
+		
 		float center_x=CanvasWidth/2;
 		float center_y=CanvasHeight/2;
 		
@@ -67,6 +106,12 @@ public class GameLogic {
 		//Log.d("GameLogic.getScreenPosition", "rotation_y"+rotation_y +"  Viewrange:"+VIEWRANGE);
 		
 		
+		//if (rotation_x+VIEWRANGE < 0) rotation_x+=2*Math.PI;
+
+		//if(difference_y <0){difference_y+= 2*Math.PI;}
+		//if(difference_x <0){difference_x+= 2*Math.PI;}
+		
+		//THIS IS IT!!!\/
 		if(difference_y > -VIEWRANGE && difference_y < VIEWRANGE){
 			float unit_x=CanvasWidth/(2*VIEWRANGE);
 			float unit_y=CanvasHeight/(2*VIEWRANGE);
@@ -76,9 +121,16 @@ public class GameLogic {
 			//Vector3D ret = new Vector3D(x,y,distance);
 			Vector3D ret = new Vector3D(x,10,distance); //for now doom like ,not quake like :-/, rotate on y only
 			return ret;
-		}else{//HERE, RETURN SOMETHING...
+		}else if(difference_y <0){//HERE, RETURN SOMETHING...
+			
 			return null;
-		}
+		}else if (difference_y > Math.PI*2){
+			return null;
+		}else if (difference_x <0){
+			return null;
+		}else if (difference_x > Math.PI*2){
+			return null;		
+		}else{ return null;}
 		
 	}
 	public void placeEnemy(Canvas c,Vector3D camRot){
@@ -156,7 +208,7 @@ public class GameLogic {
 		//placement(canvas); //TODO get rid of this...
 		
 		Vector3D camRot = mSensors.getOrientation();
-		placeEnemy(canvas,camRot);
+		//placeEnemy(canvas,camRot);
 		
 		
 		//mEnemies.draw(canvas,mSensors);

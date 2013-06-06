@@ -61,8 +61,8 @@ public class OverlayView extends View {
 		Enemy enemyB = new Enemy(0, 0, -10, 999, bmp);
 		Enemy enemyC = new Enemy( 5,30, 0, 999, bmp);
 		Enemy enemyD = new Enemy(10,0, 20, 999, bmp);
-		Enemy enemyE = new Enemy(15, -15, -4, 999, bmp);
-		Enemy enemyF = new Enemy(5, -5, -9, 999, bmp);
+		Enemy enemyE = new Enemy(-15, 0, -4, 999, bmp);
+		Enemy enemyF = new Enemy(5, 0, -9, 999, bmp);
 		
 		
 		Log.d("LoadLevel", "Got enemy? " + enemyA.equals(null));

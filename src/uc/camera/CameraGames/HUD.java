@@ -26,7 +26,7 @@ public class HUD {
 			c.drawRect(radarFrame, blackpaint);		
 //			c.drawLine(radarFrame.left, radarFrame.top, radarFrame.bottom, radarFrame.width(), bluepaint); //Z
 			c.drawLine(radarFrame.left, radarFrame.top, radarFrame.bottom, radarFrame.right, bluepaint); //Z
-			c.drawLine(radarFrame.left, radarFrame.top+radarFrame.height()/2, radarFrame.width(), radarFrame.top+radarFrame.height()/2, redpaint); //X
+			c.drawLine(radarFrame.left, radarFrame.top+radarFrame.height()/2, radarFrame.right, radarFrame.top+radarFrame.height()/2, redpaint); //X
 			c.drawLine(radarFrame.left+radarFrame.width()/2, radarFrame.top ,radarFrame.left+radarFrame.width()/2 , radarFrame.bottom, greenpaint); //Y
 		}
 		//draw field of vision
@@ -76,9 +76,10 @@ public class HUD {
 		
 		
 		public void rayDraw(Canvas c,Vector3D rotation){
-			double thetaY= rotation.Y*Math.PI/180;
-			double thetaZ= rotation.Z*Math.PI/180;
-			
+			//double thetaY= rotation.Y*Math.PI/180;
+			//double thetaZ= rotation.Z*Math.PI/180;
+			double thetaY= rotation.Y;
+			double thetaZ= rotation.Z;
 			
 			double magnitude=50;
 			double x=magnitude * Math.cos(thetaY);
@@ -89,7 +90,7 @@ public class HUD {
 			
 			int[] start = getXYCenter();
 			int[] end = getXYCoord(endpoint);
-			c.drawLine(start[0], start[1], end[0], end[1], redpaint);
+			c.drawLine(start[0], start[1], end[0], end[1], new Paint(Color.WHITE));
 			
 		}
 		//get radar screen center;
@@ -126,6 +127,7 @@ public class HUD {
 	Paint bluepaint = new Paint();	
 	Paint blackpaint = new Paint();
 	Paint graypaint = new Paint();
+	Paint whitepaint = new Paint();
 	//graypaint.setColor(android.graphics.Color.GRAY);
 	
 	
@@ -140,9 +142,9 @@ public class HUD {
 		double rotation_Z_axis=mSensors.rotation_z;
 		
 		
-		c.drawText("rotation on X:"+rotation_X_axis, 50, 50, redpaint);
-		c.drawText("rotation on Y:"+rotation_Y_axis, 50, 60, greenpaint);
-		c.drawText("rotation on Z:"+rotation_Z_axis, 50, 70, bluepaint);
+		c.drawText("rotation on X:"+rotation_X_axis, 250, 50, redpaint);
+		c.drawText("rotation on Y:"+rotation_Y_axis, 250, 60, greenpaint);
+		c.drawText("rotation on Z:"+rotation_Z_axis, 250, 70, bluepaint);
 	}
 	
 	
@@ -191,7 +193,7 @@ public class HUD {
 		
 		mRadar.enemiesDraw(c,mEnemies);
 		mRadar.rayDraw(c,camRot);
-		mRadar.fovDraw(c,camRot);
+		//mRadar.fovDraw(c,camRot);
 		
 		//arrowDraw(c,orienationCam);
 	}

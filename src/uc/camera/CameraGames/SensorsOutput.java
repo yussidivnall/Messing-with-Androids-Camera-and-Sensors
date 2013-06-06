@@ -34,9 +34,9 @@ public class SensorsOutput implements SensorEventListener{
 	public void onSensorChanged(SensorEvent event) {
 		// TODO Auto-generated method stub
 		if(event.sensor.getType()==Sensor.TYPE_ORIENTATION){
-			rotation_y=event.values[0];
-			rotation_x=event.values[1];
-			rotation_z=event.values[2];
+			rotation_y=event.values[0]*(float)Math.PI/180;
+			rotation_x=event.values[1]*(float)Math.PI/180;
+			rotation_z=event.values[2]*(float)Math.PI/180;
 		}
 		
 		if(event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
@@ -46,7 +46,7 @@ public class SensorsOutput implements SensorEventListener{
 		}
 	}
 	public Vector3D getOrientation(){
-		Vector3D ret = new Vector3D(rotation_x,rotation_y,rotation_z);
+		Vector3D ret = new Vector3D(rotation_x*Math.PI/180,rotation_y*Math.PI/180,rotation_z*Math.PI/180);
 		//float[] values;
 		//float[] R;
 		//mSensorManager.getOrientation(R, values);
