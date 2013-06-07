@@ -86,11 +86,11 @@ public class HUD {
 			double z=magnitude * Math.sin(thetaY);
 			double y=magnitude * Math.sin(thetaZ);
 			Vector3D endpoint = new Vector3D(x,y,z);
-			gridDraw(c,endpoint);
+			//gridDraw(c,endpoint);
 			
 			int[] start = getXYCenter();
 			int[] end = getXYCoord(endpoint);
-			c.drawLine(start[0], start[1], end[0], end[1], new Paint(Color.WHITE));
+			c.drawLine(start[0], start[1], end[0], end[1], redpaint);
 			
 		}
 		//get radar screen center;
@@ -188,10 +188,11 @@ public class HUD {
 		
 		
 		mRadar.axisDraw(c);
+		Log.d("HUD.draw","Drawing HUD...");
 		Vector3D camRot = mSensors.getOrientation();
 		int xmin=mSensors.mSensorManager.AXIS_MINUS_X;
 		
-		mRadar.enemiesDraw(c,mEnemies);
+		//mRadar.enemiesDraw(c,mEnemies);
 		mRadar.rayDraw(c,camRot);
 		//mRadar.fovDraw(c,camRot);
 		

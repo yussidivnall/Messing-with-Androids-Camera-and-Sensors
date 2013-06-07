@@ -46,7 +46,9 @@ public class SensorsOutput implements SensorEventListener{
 		}
 	}
 	public Vector3D getOrientation(){
-		Vector3D ret = new Vector3D(rotation_x*Math.PI/180,rotation_y*Math.PI/180,rotation_z*Math.PI/180);
+		
+		//Vector3D ret = new Vector3D(rotation_x*Math.PI/180,rotation_y*Math.PI/180,rotation_z*Math.PI/180);
+		Vector3D ret = new Vector3D(rotation_x,rotation_y,rotation_z);
 		//float[] values;
 		//float[] R;
 		//mSensorManager.getOrientation(R, values);
