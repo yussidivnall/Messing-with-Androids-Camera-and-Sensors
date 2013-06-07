@@ -159,12 +159,6 @@ public class GameLogic {
 				//Calculate position on screen
 				
 			}
-			
-			
-			//Log.d("GameLogic.placeEnemy","Enemy Theta Y: "+enemyThetaY+" ;CameraThetaY: "+camThetaY);
-			
-			
-			
 			Vector3D enemyScrPos=getScreenPosition(e.getPosition());
 			if (enemyScrPos != null){
 				try{
@@ -208,7 +202,7 @@ public class GameLogic {
 		//placement(canvas); //TODO get rid of this...
 		
 		Vector3D camRot = mSensors.getOrientation();
-		//placeEnemy(canvas,camRot);
+		placeEnemy(canvas,camRot);
 		
 		
 		//mEnemies.draw(canvas,mSensors);
